@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           },
   
           // make sure to serialize the JSON body
-          body: JSON.stringify(newCat),
+          body: JSON.stringify(newBurger),
         }).then(() => {
           // Empty the form
           document.getElementById('burg').value = '';
