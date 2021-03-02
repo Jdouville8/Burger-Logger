@@ -1,4 +1,4 @@
-// mysql connection
+// Import MySQL connection.
 const connection = require('./connection');
 
 // Helper function for SQL syntax to add question marks (?, ?, ?) in query
@@ -26,7 +26,7 @@ const objToSql = (ob) => {
         value = `'${value}'`;
       }
       // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
-      // e.g. {sleepy: true} => ["sleepy=true"]
+      // e.g. {devoured: true} => ["devoured=true"]
       arr.push(`${key}=${value}`);
     }
   }
@@ -37,16 +37,55 @@ const objToSql = (ob) => {
 
 // Object for all our SQL statement functions.
 const orm = {
-  selectAll() {
-
+  selectAll(tableInput, cb) {
+    const queryString = `SELECT * FROM ${tableInput};`;
+    connection.query(queryString, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      cb(result);
+    });
   },
-  insertOne() {
+  insertOne(table, cols, vals, cb) {
+    let queryString = `INSERT INTO ${table}`;
 
-  },
-  updateOne() {
+    queryString += ' (';
+    queryString += cols.toString();
+    queryString += ') ';
+    queryString += 'VALUES (';
+    queryString += printQuestionMarks(vals.length);
+    queryString += ') ';
 
+    console.log(queryString);
+
+    connection.query(queryString, vals, (err, result) => {
+      if (err) {
+        throw err;
+      }
+
+      cb(result);
+    });
   },
+  // An example of objColVals would be {name: panther, devoured: true}
+  updateOne(table, objColVals, condition, cb) {
+    let queryString = `UPDATE ${table}`;
+
+    queryString += ' SET ';
+    queryString += objToSql(objColVals);
+    queryString += ' WHERE ';
+    queryString += condition;
+
+    console.log(queryString);
+    connection.query(queryString, (err, result) => {
+      if (err) {
+        throw err;
+      }
+
+      cb(result);
+    });
+  },
+
 };
 
-
+// Export the orm object for the model (burger.js).
 module.exports = orm;
