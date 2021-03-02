@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     createburgerBtn.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      // Grabs the value of the textarea that goes by the name, "quote"
+      // Grabs the value of the textarea that goes by the name, "burg"
       const newburger = {
         burger_name: document.getElementById('burg').value.trim(),
-        devoured: document.getElementById('devoured').checked,
+        devoured: false,
       };
 
       // Send POST request to create a new quote
