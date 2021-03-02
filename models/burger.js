@@ -6,7 +6,7 @@ var burger = {
           cb(res);
       });
   },
-  insertOne: function (name, cb) {
+  insertOne: function (burger_name, cb) {
       orm.insertOne("burgers", [
           "burger_name", "devoured"
       ], [
@@ -14,7 +14,7 @@ var burger = {
       ], cb);
   },
   updateOne: function (id, cb) {
-      var condition = "id=" + id;
+      var condition = id;
       orm.updateOne("burgers", {
           devoured: true
       }, condition, cb);
